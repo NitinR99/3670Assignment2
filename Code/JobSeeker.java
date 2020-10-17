@@ -30,32 +30,31 @@ public static void main(String args[]) throws IOException{
     }
 
     System.out.println("Client Address : "+address);
+   
     System.out.println("Enter Data to echo Server ( Enter QUIT to end):");
-
     String response=null;
     try{
         line=br.readLine(); 
-        while(line.compareTo("QUIT")!=0){
-                os.println(line);
-                os.flush();
-                response=is.readLine();
-                System.out.println("Server Response : "+response);
-                line=br.readLine();
-
-            }
-
-
-
-    }
-    catch(IOException e){
+        while(line.compareTo("QUIT")!=0)
+        {
+            os.println(line);
+            os.flush();
+            response=is.readLine();
+            System.out.println("Server Response : "+response);
+            line=br.readLine();
+        }
+      }
+    
+    catch(IOException e)
+    {
         e.printStackTrace();
-    System.out.println("Socket read Error");
+        System.out.println("Socket read Error");
     }
-    finally{
-
+    
+    finally
+    {
         is.close();os.close();br.close();s1.close();
-                System.out.println("Connection Closed");
-
+        System.out.println("Connection Closed");
     }
 
 }
