@@ -59,18 +59,22 @@ public static void main(String args[]) throws Exception{
     ServerSocket ss2=null;
      connections = new LinkedList<ServerThread>(); //keeps track of all current connections
     System.out.println("Server Listening......");
-    try{
+    try
+    {
         ss2 = new ServerSocket(4445); // can also use static final PORT_NUM , when defined
 
     }
-    catch(IOException e){
-    e.printStackTrace();
-    System.out.println("Server error. Unable to start server.");
+    catch(IOException e)
+    {
+	    e.printStackTrace();
+	    System.out.println("Server error. Unable to start server.");
 
     }
 
-    while(true){
-        try{
+    while(true)
+    {
+        try
+	{
             //menu();
             s= ss2.accept(); //listens for new connection
             System.out.println("connection Established ("+count+")");
@@ -78,15 +82,16 @@ public static void main(String args[]) throws Exception{
             temp.start();
             connections.add(temp); //adds it to the linkedlist
             count++;
-            
-
         }
 
-    catch(Exception e){
+    catch(Exception e)
+    {
         e.printStackTrace();
         System.out.println("Connection Error. Unable to connect to Job seekers.");
 
     }
+	    
+	    
     for(int i=0;i<connections.size();i++) //checks and removes inactive connections
     {
         if(connections.get(i).isActive==false)
