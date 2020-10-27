@@ -4,10 +4,11 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.util.concurrent.TimeUnit;
 
 public class JobSeeker {
 
-public static void main(String args[]) throws IOException{
+public static void main(String args[]) throws Exception {
 
 
     InetAddress address=InetAddress.getLocalHost();
@@ -34,14 +35,33 @@ public static void main(String args[]) throws IOException{
     System.out.println("Enter Data to echo Server ( Enter QUIT to end):");
     String response=null;
     try{
-        line=br.readLine(); 
-        while(line.compareTo("QUIT")!=0)
+        //line=br.readLine(); 
+        while(true)
         {
-            os.println(line);
-            os.flush();
+            
+			//os.println(line);
+            //os.flush();
             response=is.readLine();
-            System.out.println("Server Response : "+response);
-            line=br.readLine();
+			System.out.println(response);
+			if(response.equals("done5")){
+				TimeUnit.SECONDS.sleep(5);
+				os.println("5 seconds have passed ~ DONE!");
+				os.flush();
+			}
+			else if(response.equals("done10")){
+				TimeUnit.SECONDS.sleep(10);
+				os.println("10 seconds have passed ~ DONE!");
+				os.flush();
+			}
+			else{
+				System.out.println("No message received");
+			}
+            
+			System.out.println("Server Response : "+response);
+			
+			
+			
+            //line=br.readLine();
         }
       }
     
