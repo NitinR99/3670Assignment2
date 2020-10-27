@@ -30,6 +30,40 @@ public class JobCreator {
     if(choice==2)
     {
         //assign a job
+		
+		for(int i=0;i<connections.size();i++)
+		{
+			System.out.println("Client("+i+") is Free? "+connections.get(i).isFree);
+		}
+	
+		System.out.println("Enter client id to send: ");
+        int clId=Integer.parseInt(br.readLine());
+		if(connections.get(clId)!=null && connections.get(clId).isFree)
+        {
+            try{
+				System.out.println("1) send \"Done\" after 5 seconds");
+				System.out.println("2) send \"Done\" after 10 seconds");
+				
+				int choi = Integer.parseInt(br.readLine());
+				
+				if(choi == 1){
+					String t = "done5";
+					connections.get(clId).os.println(t); //sending task prompt
+					connections.get(clId).os.flush();
+				}
+				else if(choi == 2){
+					String t = "done10";
+					connections.get(clId).os.println(t); //sending task prompt
+					connections.get(clId).os.flush();
+				}
+				connections.get(clId).isFree = false;
+				
+            }
+            catch(Exception e)
+            {
+                System.out.println("error while sending the task");
+            }
+        }
         menu();
     }
     if(choice==3)
@@ -110,15 +144,16 @@ public static void main(String args[]) throws Exception{
 
 class ServerThread extends Thread{  
     int id;
-    boolean isActive=true;
-    String line=null;
+    boolean isActive = true;
+	boolean isFree = true;
+    String line = null;
     BufferedReader  is = null;
-    PrintWriter os=null;
-    Socket s=null;
-    String fromClient=null;
+    PrintWriter os = null;
+    Socket s = null;
+    String fromClient = null;
     public ServerThread(Socket s,int x){
-        this.s=s;
-        id=x;
+        this.s = s;
+        id = x;
     }
 
     public void run() {
@@ -137,6 +172,14 @@ class ServerThread extends Thread{
             os.println(line);
             os.flush();
             System.out.println("Client "+id+"  :  "+line);
+			if(line.equals("5 seconds have passed ~ DONE!")){
+				isFree = true;
+			}
+			if(line.equals("10 seconds have passed ~ DONE!")){
+				isFree = true;
+			}
+			
+			
             line=is.readLine();
         }   
     } catch (IOException e) {
