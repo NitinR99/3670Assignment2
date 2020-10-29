@@ -5,11 +5,12 @@ import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.util.concurrent.TimeUnit;
-
+/*
+This class defines the client
+ */
 public class JobSeeker {
 
 public static void main(String args[]) throws Exception {
-
 
     InetAddress address=InetAddress.getLocalHost();
     Socket s1=null;
@@ -17,8 +18,7 @@ public static void main(String args[]) throws Exception {
     BufferedReader br=null;
     BufferedReader is=null;
     PrintWriter os=null;
-    
-
+    //searches for client using address and port 4445 and establishes a conection when available
     try {
         s1=new Socket(address, 4445); // You can use static final constant PORT_NUM
         br= new BufferedReader(new InputStreamReader(System.in));
@@ -31,18 +31,14 @@ public static void main(String args[]) throws Exception {
     }
 
     System.out.println("Client Address : "+address);
-   
     System.out.println("Enter Data to echo Server ( Enter QUIT to end):");
     String response=null;
+    //gets a job from the server and does it. On completion, it sends back a string, confirming the completion of the job.
     try{
-        //line=br.readLine(); 
         while(true)
         {
-            
-			//os.println(line);
-            //os.flush();
             response=is.readLine();
-			System.out.println(response);
+			System.out.println("Job received: "+ response);
 			if(response.equals("done5")){
 				TimeUnit.SECONDS.sleep(5);
 				os.println("5 seconds have passed ~ DONE!");
@@ -56,26 +52,17 @@ public static void main(String args[]) throws Exception {
 			else{
 				System.out.println("No message received");
 			}
-            
-			System.out.println("Server Response : "+response);
-			
-			
-			
-            //line=br.readLine();
         }
       }
-    
     catch(IOException e)
     {
         e.printStackTrace();
         System.out.println("Socket read Error");
     }
-    
     finally
     {
         is.close();os.close();br.close();s1.close();
         System.out.println("Connection Closed");
     }
-
 }
 }

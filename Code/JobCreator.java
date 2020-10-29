@@ -5,16 +5,18 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.LinkedList;
-
+/*
+This class is the server which is able to connect to multiple JobSeekers (clients)
+*/
 public class JobCreator {
-   static LinkedList<ServerThread> connections;
+   static LinkedList<ServerThread> connections; //each node in the linkedlist contains the thread of a jobseeker. Allowing this code to assign jobs to multiple clients simultaneously
    static void menu() throws Exception
    {
     BufferedReader br=new BufferedReader(new InputStreamReader(System.in));
-    System.out.println("Creator menu\n-----------------\n1.Get all active coonnections\n2.Assign a job to a seeker\n3.Terminate a connection\n9.Refresh");
+    System.out.println("Creator menu\n-----------------\n1.Get all active coonnections\n2.Assign a job to a seeker\n3.Terminate a connection\n9.wait for new connection");
     int choice=-1;
     try{
-    choice=Integer.parseInt(br.readLine());}
+    choice=Integer.parseInt(br.readLine());} //reads choice the user selects
     catch(Exception e)
     {
         System.out.println("input error.");
@@ -27,20 +29,19 @@ public class JobCreator {
         }
         menu();
     }
-    if(choice==2)
+    else if(choice==2)//assigns job to a client
     {
-        //assign a job
-		
+		//shows user the clients which are free and can accept a job
 		for(int i=0;i<connections.size();i++)
 		{
 			System.out.println("Client("+i+") is Free? "+connections.get(i).isFree);
 		}
 	
-		System.out.println("Enter client id to send: ");
+		System.out.println("Enter client id to send: ");//gets the client id to assign a job to it
         int clId=Integer.parseInt(br.readLine());
 		if(connections.get(clId)!=null && connections.get(clId).isFree)
         {
-            try{
+            try{//Asks user which of the 2 jobs should be assigned to the client
 				System.out.println("1) send \"Done\" after 5 seconds");
 				System.out.println("2) send \"Done\" after 10 seconds");
 				
@@ -63,10 +64,19 @@ public class JobCreator {
             {
                 System.out.println("error while sending the task");
             }
+            menu();
         }
-        menu();
+        else if(connections.get(clId)!=null && !connections.get(clId).isFree)
+        {
+                System.out.println("The selected client is not free. Try again.");
+                menu();
+        }
+        else{
+            System.out.println("Client not found. Try again.");
+            menu();
+        }
     }
-    if(choice==3)
+    else if(choice==3)//Terminates the server side connection of the client. The client will not be able to send anything to the server.
     {
         System.out.println("Enter client id to terminate: ");
         int clId=Integer.parseInt(br.readLine());
@@ -81,10 +91,20 @@ public class JobCreator {
             catch(Exception e)
             {
                 System.out.println("error while ending client connection");
+                menu();
             }
         }
         menu();
     }
+    else if(choice==9)
+    {
+        System.out.println("waiting for new connection...");
+    }
+    else{
+        System.out.println("Invalid option. Try again.");
+       menu();
+    }
+
    }
 public static void main(String args[]) throws Exception{
     
@@ -95,7 +115,7 @@ public static void main(String args[]) throws Exception{
     System.out.println("Server Listening......");
     try
     {
-        ss2 = new ServerSocket(4445); // can also use static final PORT_NUM , when defined
+        ss2 = new ServerSocket(4445); // connection is through port 4445
 
     }
     catch(IOException e)
@@ -109,7 +129,6 @@ public static void main(String args[]) throws Exception{
     {
         try
 	{
-            //menu();
             s= ss2.accept(); //listens for new connection
             System.out.println("connection Established ("+count+")");
             ServerThread temp= new ServerThread(s, count); //assigns the connection a new serverthread
@@ -141,11 +160,13 @@ public static void main(String args[]) throws Exception{
 }
 
 }
-
+/*
+This class defines the individual thread for each connection to the JobCreator
+ */
 class ServerThread extends Thread{  
-    int id;
-    boolean isActive = true;
-	boolean isFree = true;
+    int id; //unique id for the client, to be used by JobCreator
+    boolean isActive = true; // boolean value to check if the connection is still active
+	boolean isFree = true; // boolean value to check if the client is doing a task or whether it is free
     String line = null;
     BufferedReader  is = null;
     PrintWriter os = null;
@@ -164,7 +185,7 @@ class ServerThread extends Thread{
     }catch(IOException e){
         System.out.println("IO error in server thread");
     }
-
+//to assign boolean value to isFree
     try {
         line=is.readLine();
         while(line.compareTo("QUIT")!=0){
@@ -186,14 +207,14 @@ class ServerThread extends Thread{
 
         line=this.getName(); //reused String line for getting thread name
         System.out.println("IO Error/ Client ("+ id+ ") terminated abruptly");
-        isActive=false;
+        isActive=false; //since there is a connection error
     }
     catch(NullPointerException e){
         line=this.getName(); //reused String line for getting thread name
         System.out.println("Client id("+ id+") Closed");
-        isActive=false;
+        isActive=false; //since there is a connection error
     }
-
+//to close the connection
     finally{    
     try{
         if (is!=null){
