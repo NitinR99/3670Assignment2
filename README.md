@@ -41,4 +41,4 @@ After any client is done with it's assigned job, it will send a confirmation str
 
 ## Additional Information
 
-At any time during the execution, the JobSeeker can terminate connection by entering ctrl-c on their command window. The JobCreator is also able to ternminate any unwanted connection by using menu option "3".
+At any time during the execution, the JobSeeker can terminate connection by entering ctrl-c on their command window. The JobCreator is also able to terminate any unwanted connection by using menu option "3".
