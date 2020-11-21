@@ -49,7 +49,7 @@ public static void main(String args[]) throws Exception {
 				os.println("10 seconds have passed ~ DONE!");
 				os.flush();
 			}
-      else if(response.equals("justip"))
+      else if(response.equals("justip"))//option to check if given ip address is online
       {
         String ipA=is.readLine();
         System.out.println("Checking if "+ipA+" is online...");
@@ -70,7 +70,7 @@ public static void main(String args[]) throws Exception {
         os.println("justip ~ DONE!");
         os.flush();
       }
-      else if(response.equals("portip"))
+      else if(response.equals("portip"))//option to check if given IP's port's status
       {
         String ipA=is.readLine();
         int portn=Integer.parseInt(is.readLine());
@@ -92,7 +92,7 @@ public static void main(String args[]) throws Exception {
         os.println("portip ~ DONE!");
         os.flush();
       }
-      else if(response.equals("icmpattack"))
+      else if(response.equals("icmpattack"))//option to initiate ICMP attack by pinging given IP address
       {
         System.out.println("Initiating ICMP attack...");
       //  telnet <ip_address> <port_number>
@@ -109,7 +109,7 @@ public static void main(String args[]) throws Exception {
         os.println("icmpattack ~ DONE!");
         os.flush();
       }
-      else if(response.equals("tcpattack"))
+      else if(response.equals("tcpattack"))//option to initiate TCP attack by making a socket with given IP address and port and opening an output stream to it, and flooding it with messages
       {
         String ipA=is.readLine();
         int portn=Integer.parseInt(is.readLine());

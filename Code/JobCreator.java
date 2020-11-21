@@ -59,7 +59,7 @@ public class JobCreator {
 					connections.get(clId).os.println(t); //sending task prompt
 					connections.get(clId).os.flush();
 				}
-        else if(choi == 3)
+        else if(choi == 3) 
         {
           System.out.println("Enter IP address to send to client: ");
           String df=br.readLine();
