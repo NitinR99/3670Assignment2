@@ -8,7 +8,7 @@ import org.pcap4j.packet.*;
 import java.util.*;
 import org.pcap4j.core.PcapNetworkInterface.PromiscuousMode;
 import org.pcap4j.core.BpfProgram.BpfCompileMode;
-public class App 
+public class App
 {
  int packet_count = 0;
   private static final String READ_TIMEOUT_KEY = PacketListener.class.getName() + ".readTimeout";
@@ -19,7 +19,7 @@ public class App
   private static final String TIMESTAMP_PRECISION_NANO_KEY = PacketListener.class.getName() + ".timestampPrecision.nano";
   private static final boolean TIMESTAMP_PRECISION_NANO = Boolean.getBoolean(TIMESTAMP_PRECISION_NANO_KEY);
 
-public int sniff() throws PcapNativeException, NotOpenException 
+public int sniff() throws PcapNativeException, NotOpenException
 {
 
     PcapNetworkInterface nif = null;
@@ -36,32 +36,32 @@ public int sniff() throws PcapNativeException, NotOpenException
     System.out.println(nif.getName() + "(" + nif.getDescription() + ")");
 
     PcapHandle handle = nif.openLive(65536, PromiscuousMode.PROMISCUOUS, 10);
-	handle.setFilter("tcp port 4445 or icmp", BpfCompileMode.OPTIMIZE);
-    while (true) 
+	handle.setFilter("tcp port 4445 or udp port 4445", BpfCompileMode.OPTIMIZE);
+    while (true)
     {
       Packet packet = handle.getNextPacket();
-      if (packet != null) 
+      if (packet != null)
       {
-        if (packet.contains(IpV4Packet.class) && (packet.contains(TcpPacket.class) || packet.contains(UdpPacket.class))) 
+        if (packet.contains(IpV4Packet.class) && (packet.contains(TcpPacket.class) || packet.contains(UdpPacket.class)))
 	{
           IpV4Packet pkt = packet.get(IpV4Packet.class);
-          if (packet.contains (TcpPacket.class)) 
+          if (packet.contains (TcpPacket.class))
 	   {
              TcpPacket tcpPkt = packet.get(TcpPacket.class);
 	System.out.println(tcpPkt.getHeader().getDstPort().value());
-	
+
             	 System.out.println("TCP -->"+pkt.getHeader().getSrcAddr() + ":" + tcpPkt.getHeader().getDstPort());
 	    }
-           
+
           else
 	  {
              UdpPacket udpPkt = packet.get(UdpPacket.class);
 	System.out.println(udpPkt.getHeader().getDstPort().value());
-	
+
              System.out.println("UDP -->"+pkt.getHeader().getSrcAddr() + ":" + udpPkt.getHeader().getDstPort());
 	  }
-          
-	
+
+
         }
 	else
 	{

