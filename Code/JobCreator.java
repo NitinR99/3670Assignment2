@@ -120,10 +120,10 @@ public class JobCreator {
     else if(choice==4) //choice for one-to-many attacks
     {
       System.out.println("Choose the type of attack");
-      System.out.println("1. ICMP attack for 5 seconds (Check pcap4j execution terminal)");
+      System.out.println("1. UDP attack for 5 seconds (Check pcap4j execution terminal)");
       System.out.println("2. TCP attack for 5 seconds");
       int chhh=Integer.parseInt(br.readLine());
-      if(chhh==1) //tells every client to conduct an ICMP attack against specified target IP
+      if(chhh==1) //tells every client to conduct an UDP attack against specified target IP
       {
         System.out.println("Enter IP address to send to client: ");
         String df=br.readLine();

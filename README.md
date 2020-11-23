@@ -36,7 +36,7 @@ Follow "Using pcap4j.pdf" to set up the Maven development environment on your sy
 mvn package
 java -jar target/uber-pcap-1.0.0.jar
 ```
-**Step 5:** Choose the device which has the description "Adapter for loopback traffic capture" to view TCP packet traffic on port 4445 and ICMP traffic.
+**Step 5:** Choose the device which has the description "Adapter for loopback traffic capture" to view TCP packet traffic on port 4445 and UDP traffic.
 
 **Step 6:** You can view the current connections to the JobCreator by choosing option "1" on the JobCreator command window.
 
