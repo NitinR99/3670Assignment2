@@ -15,6 +15,7 @@ java JobSeeker
 The line "java JobSeeker" can be run many times. (Each Jobseeker is a client)
 ### For Assignment 3
 Follow "Using pcap4j.pdf" to set up the Maven development environment on your system.
+You also need to download and install netcat on your local system, and add it to your system path variables.
 ## How to use? (Assignment 2)
 
 **Step 1:** Run JobCreator
